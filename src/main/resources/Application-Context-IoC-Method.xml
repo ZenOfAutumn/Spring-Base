@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   http://www.springframework.org/schema/util
+	   http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+	<description>IoC Method Configuration</description>
+
+	<!-- prototype -->
+	<bean id="car" class="com.autumn.zen.ioc.method.Car" p:brand="Benz"
+		p:price="100.00" scope="prototype" />
+
+	<!-- look-up method insert -->
+	<bean id="wl" class="com.autumn.zen.ioc.method.Manager">
+		<lookup-method name="getCar" bean="car" />
+	</bean>
+
+	<!-- method replacer method insert -->
+	<bean id="replacingManager" class="com.autumn.zen.ioc.method.ReplacingManager" />
+
+	<bean id="replacedManager" class="com.autumn.zen.ioc.method.ReplacedManager">
+		<replaced-method name="getCar" replacer="replacingManager"></replaced-method>
+	</bean>
+
+
+
+
+</beans>

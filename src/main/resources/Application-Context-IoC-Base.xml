@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+	<description> IOC Base Configuration</description>
+
+	<!-- setter -->
+	<bean id="completable" class="com.autumn.zen.ioc.CompletableBean"
+		init-method="iinit" destroy-method="idestroy" p:id="1" p:name="first" />
+
+	<bean id="personPostProcessor" class="com.autumn.zen.ioc.DefaultBeanPostProcessor"
+		p:target="com.autumn.zen.ioc.bean.Person" />
+
+	<bean id="personBeanFactoryPostProcessor" class="com.autumn.zen.ioc.DefaultBeanFactoryPostProcessor"
+		p:classPattern="Person" />
+
+
+	<!-- setter -->
+	<bean id="MikeBrown" class="com.autumn.zen.ioc.bean.Person">
+		<property name="firstName" value="mike"></property>
+		<property name="lastName" value="brown"></property>
+		<property name="id" value="0"></property>
+	</bean>
+
+	<!-- constructor using type match -->
+	<bean id="KevinDurant" class="com.autumn.zen.ioc.bean.Person">
+		<constructor-arg type="java.lang.Integer" value="1" />
+		<constructor-arg type="java.lang.String" value="Kevin" />
+		<constructor-arg type="java.lang.String" value="Durant" />
+	</bean>
+
+
+	<!-- constructor using index -->
+	<bean id="LebronJames" class="com.autumn.zen.ioc.bean.Person">
+		<constructor-arg index="0" value="2" />
+		<constructor-arg index="1" value="Lebron" />
+		<constructor-arg index="2" value="James" />
+	</bean>
+
+	<!-- constructor using index and type -->
+	<bean id="ChrisPaul" class="com.autumn.zen.ioc.bean.Person">
+		<constructor-arg index="0" value="3" />
+		<constructor-arg index="1" value="Chris" />
+		<constructor-arg index="2" value="Paul" />
+		<constructor-arg index="3" type="java.lang.Integer"
+			value="33" />
+	</bean>
+
+	<!-- constructor using index and type -->
+	<bean id="StephenCurry" class="com.autumn.zen.ioc.bean.Person">
+		<constructor-arg index="0" value="4" />
+		<constructor-arg index="1" value="Stephen" />
+		<constructor-arg index="2" value="Curry" />
+		<constructor-arg index="3" type="java.lang.Double"
+			value="4000" />
+	</bean>
+
+
+	<!-- factory bean -->
+	<bean id="personFactory" class="com.autumn.zen.ioc.PersonFactory">
+	</bean>
+	<bean id="PaulGasol" factory-bean="personFactory" factory-method="createPaulGasol" />
+
+	<!-- static factory method -->
+	<bean id="KobeBryant" class="com.autumn.zen.ioc.PersonFactory"
+		factory-method="createKobeBryant" />
+
+	<!-- reference bean -->
+	<bean id="kobe" class="com.autumn.zen.ioc.bean.BasketBallPlayer">
+		<property name="person">
+			<ref bean="KobeBryant"></ref>
+		</property>
+		<property name="team">
+			<value>Lakers</value>
+		</property>
+	</bean>
+
+	<!-- p:ref -->
+	<bean id="james" class="com.autumn.zen.ioc.bean.BasketBallPlayer"
+		p:person-ref="LebronJames" p:team="Cavaliers" />
+
+	<!-- inner bean -->
+	<bean id="gasol" class="com.autumn.zen.ioc.bean.BasketBallPlayer">
+		<property name="person">
+			<bean class="com.autumn.zen.ioc.bean.Person">
+				<constructor-arg index="0" value="7" />
+				<constructor-arg index="1" value="Paul" />
+				<constructor-arg index="2" value="Gasol" />
+				<constructor-arg index="3" type="java.lang.Double"
+					value="2000" />
+			</bean>
+		</property>
+		<property name="team">
+			<value>Lakers</value>
+		</property>
+	</bean>
+
+	<!-- null value -->
+	<bean id="null" class="com.autumn.zen.ioc.bean.BasketBallPlayer">
+		<property name="person">
+			<null />
+		</property>
+		<property name="team">
+			<null />
+		</property>
+	</bean>
+
+	<!-- cascade -->
+	<bean id="wade" class="com.autumn.zen.ioc.bean.BasketBallPlayer">
+		<property name="person.id" value="8" />
+		<property name="person.lastName" value="Wade" />
+		<property name="person.firstName" value="Dwyane" />
+		<property name="team" value="Bulls" />
+	</bean>
+
+
+	<!-- collection insert -->
+	<bean id="Lakers" class="com.autumn.zen.ioc.bean.Team">
+		<property name="players">
+			<list>
+				<ref bean="kobe" />
+				<ref bean="gasol" />
+			</list>
+		</property>
+		<property name="years">
+			<set>
+				<value>2015</value>
+				<value>2016</value>
+				<value>2017</value>
+			</set>
+		</property>
+		<property name="mvpEveryYear">
+			<map>
+				<entry>
+					<key>
+						<value>2015</value>
+					</key>
+					<ref bean="kobe" />
+				</entry>
+				<entry>
+					<key>
+						<value>2016</value>
+					</key>
+					<ref bean="gasol" />
+				</entry>
+				<entry key="2017" value-ref="kobe"></entry>
+			</map>
+		</property>
+
+		<property name="playersPhone">
+			<props>
+				<prop key="kobeMail">kobe@lakers.com</prop>
+				<prop key="gasolMail">gasol@lakers.com</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+</beans>

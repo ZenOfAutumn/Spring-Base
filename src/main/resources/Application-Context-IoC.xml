@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+	<description>IoC Configuration</description>
+
+	<import resource="Application-Context-IoC-Base.xml" />
+	<import resource="Application-Context-IoC-Advance.xml" />
+	<import resource="Application-Context-IoC-Method.xml" />
+	<import resource="Application-Context-IoC-Relation.xml" />
+	<import resource="Application-Context-IoC-Scope.xml" />
+	<import resource="Application-Context-IoC-FactoryBean.xml" />
+    <import resource="Application-Context-IoC-Annotation.xml" />
+	
+
+
+</beans>

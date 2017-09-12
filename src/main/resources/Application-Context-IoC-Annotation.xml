@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   http://www.springframework.org/schema/util
+	   http://www.springframework.org/schema/util/spring-util-4.1.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<description>IoC Annotation Configuration</description>
+
+	<!-- annotation filter -->
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.filter.annotation">
+		<context:include-filter type="annotation"
+			expression="com.autumn.zen.ioc.annotation.filter.annotation.Scan" />
+		<context:exclude-filter type="annotation"
+			expression="com.autumn.zen.ioc.annotation.filter.annotation.NotScan" />
+	</context:component-scan>
+
+	<!-- assignable filter -->
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.filter.assignable">
+		<context:include-filter type="assignable"
+			expression="com.autumn.zen.ioc.annotation.filter.assignable.ScanService" />
+		<context:exclude-filter type="assignable"
+			expression="com.autumn.zen.ioc.annotation.filter.assignable.NotScanService" />
+	</context:component-scan>
+
+	<!-- aspectj filter -->
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.filter.aspectj">
+		<context:include-filter type="aspectj"
+			expression="com.autumn.zen.ioc.annotation.filter.aspectj.*Service+" />
+		<context:exclude-filter type="aspectj"
+			expression="com.autumn.zen.ioc.annotation.filter.aspectj.*NotScanBean+" />
+	</context:component-scan>
+	
+	<!-- custom filter -->
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.filter.custom">
+		<context:include-filter type="custom"
+			expression="com.autumn.zen.ioc.annotation.filter.custom.IncludeTypeFilter" />
+		<context:exclude-filter type="custom"
+			expression="com.autumn.zen.ioc.annotation.filter.custom.ExcludeTypeFilter" />
+	</context:component-scan>
+	
+	<!-- regex filter -->
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.filter.regex">
+		<context:include-filter type="regex"
+			expression="com\.autumn\.zen\.ioc\.annotation\.filter\.regex\.RegexScanBean" />
+		<context:exclude-filter type="regex"
+			expression="com\.autumn\.zen\.ioc\.annotation\.filter\.regex\.RegexNotScanBean" />
+	</context:component-scan>
+	
+	
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.autowire">
+	</context:component-scan>
+	
+	<context:component-scan
+		base-package="com.autumn.zen.ioc.annotation.java">
+	</context:component-scan>
+
+</beans>
