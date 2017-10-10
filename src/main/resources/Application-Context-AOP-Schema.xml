@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-	   http://www.springframework.org/schema/util
-	   http://www.springframework.org/schema/util/spring-util-4.1.xsd
-	   http://www.springframework.org/schema/context
-	   http://www.springframework.org/schema/context/spring-context-4.1.xsd
+
 	   http://www.springframework.org/schema/aop
 	   http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
 
-	<description> Application Context AOP Schema Configuration
-	</description>
+    <description>Application Context AOP Schema Configuration
+    </description>
 
-	<bean id="schemaService" class="com.autumn.zen.aop.schema.SchemaService" />
-	<bean id="schemaLogAdvice" class="com.autumn.zen.aop.schema.SchemaLogAdvice" />
-	<bean id="schemaBeforeAdvice" class="com.autumn.zen.aop.schema.SchemaBeforeAdvice" />
+    <bean id="schemaService" class="com.autumn.zen.aop.schema.SchemaService"/>
+    <bean id="schemaLogAdvice" class="com.autumn.zen.aop.schema.SchemaLogAdvice"/>
+    <bean id="schemaBeforeAdvice" class="com.autumn.zen.aop.schema.SchemaBeforeAdvice"/>
 
-	<aop:config proxy-target-class="true">
-		<aop:pointcut id="schemaPointcut"
-			expression="target(com.autumn.zen.aop.schema.SchemaService)" />
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="schemaPointcut"
+                      expression="target(com.autumn.zen.aop.schema.SchemaService)"/>
 
-		<aop:aspect ref="schemaLogAdvice">
-			<aop:before method="logBefore" pointcut-ref="schemaPointcut" />
-			<aop:after method="logAfter" pointcut-ref="schemaPointcut" />
-			<aop:after-returning method="logAfterReturn"
-				pointcut-ref="schemaPointcut" returning="retVal" />
-			<aop:declare-parents types-matching="com.autumn.zen.aop.schema.SchemaService"
-				implement-interface="com.autumn.zen.aop.schema.SchemaIntroductionService"
-				default-impl="com.autumn.zen.aop.schema.SchemaIntroductionServiceImpl" />
-		</aop:aspect>
-	</aop:config>
+        <aop:aspect ref="schemaLogAdvice">
+            <aop:before method="logBefore" pointcut-ref="schemaPointcut"/>
+            <aop:after method="logAfter" pointcut-ref="schemaPointcut"/>
+            <aop:after-returning method="logAfterReturn"
+                                 pointcut-ref="schemaPointcut" returning="retVal"/>
+            <aop:declare-parents types-matching="com.autumn.zen.aop.schema.SchemaService"
+                                 implement-interface="com.autumn.zen.aop.schema.SchemaIntroductionService"
+                                 default-impl="com.autumn.zen.aop.schema.SchemaIntroductionServiceImpl"/>
+        </aop:aspect>
+    </aop:config>
 
-	<aop:config>
-		<aop:advisor advice-ref="schemaBeforeAdvice"
-			pointcut="target(com.autumn.zen.aop.schema.SchemaService)" />
-	</aop:config>
+    <aop:config>
+        <aop:advisor advice-ref="schemaBeforeAdvice"
+                     pointcut="target(com.autumn.zen.aop.schema.SchemaService)"/>
+    </aop:config>
+
+    <!-- composite bean -->
+    <bean id="compositeBean" class="com.autumn.zen.aop.annotation.composite.CompositeBean"/>
+    <bean id="compositeFirstAdvice"
+          class="com.autumn.zen.aop.annotation.composite.CompositeFirstAdvice"/>
+    <bean id="compositeSecondAdvice"
+          class="com.autumn.zen.aop.annotation.composite.CompositeSecondAdvice"/>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="compositePointcut"
+                      expression="@annotation(com.autumn.zen.aop.annotation.composite.CompositeAnnotation)"/>
+        <aop:aspect ref="compositeFirstAdvice">
+            <aop:before method="firstProcess" pointcut-ref="compositePointcut"/>
+        </aop:aspect>
+        <aop:aspect ref="compositeSecondAdvice">
+            <aop:before method="secondProcess" pointcut-ref="compositePointcut"/>
+        </aop:aspect>
+    </aop:config>
 
 
 </beans>
